@@ -338,12 +338,14 @@ Ext.onReady(function() {
 			id : '_MENUBAR',
 			cls : 'menubar',
 			height : 32,
+			//padding:0,
+			//style:'background-color:cyan',
 			listeners : {
 				beforerender : function() {
 					var me = this;
 
 					Ext.Ajax.request({
-					    url: base + 'data/navi/menus.json',
+					    url: base + 'data/navi/zghmenu.json',
 					    method : 'GET',
 					    success: function(resp){
 					        var arr = Ext.decode(resp.responseText);
