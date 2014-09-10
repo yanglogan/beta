@@ -12,6 +12,9 @@ function() {
         	xtype:'panel',
         	//region:'west',
         	items:[
+        	       {
+        	    	 buttons :  
+        	       },
     	           {  
     	               //title: 'General Info',  
     	               xtype: 'form', 
