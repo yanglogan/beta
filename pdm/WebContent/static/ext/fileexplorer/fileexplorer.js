@@ -189,6 +189,145 @@ Ext.define('FileExplorer.ObjectList', {
 		this._VIEWTYPES[viewName] = type;
 	}
 });
+//=======================YangChao=================
+Ext.define('FileExplorer.ObjList', {
+	extend : 'Ext.panel.Panel',
+	xtype : 'feobjlist',
+	___UCODE : 'feobjectlist',
+	defaultView : 'detailed',
+	i18n : {
+		more : 'More...'
+	},
+	viewConfigs : {
+		//USAGE:you can specify any custom configs for each view here.
+	},
+	actionProvider : {//note this object should be instance of FileExplorer.ActionProvider
+		getValidActions : function() {return [];},
+		i18nFunc : function(nlsid) {return nlsid;}
+	},
+	actionExecutor : null,//note this object should be instance of FileExplorer.ActionExecutor
+	defaultActions : {
+		onObjectClick : function(rec) {
+			alert('you have clicked an object named ' + rec.get('cm:name'));
+		},
+		onUserClick : function(user) {
+			alert('you have clicked a user:' + user);
+		}
+	},
+	getPagingBar : function() {
+		return this.paging;
+	},
+	getSelectionModel : function() {
+		try {
+			return this.getCurrentPanel().getSelectionModel();
+		} catch(e) {}
+	},
+	initComponent : function() {
+		var me = this;
+		this.layout = 'fit';
+		
+		if (this.store) {
+			var actionProvider = this.actionProvider;
+			if (actionProvider == null) {
+				this.actionProvider = actionProvider = Ext.create('FileExplorer.ActionProvider');
+			}
+			this.store.on('refresh', function() {
+				this.each(function(rec) {
+					var actionlist = actionProvider.getValidActions(rec);
+					
+					var multiactionlist = [];
+					Ext.each(actionlist, function(action) {
+						if (action.multisupport) {
+							multiactionlist.push(action);
+						}
+					});
+					
+					rec.ACTIONLIST = actionlist;
+					rec.MULTI_ACTIONLIST = multiactionlist;
+					
+				});
+			});
+		}
+		
+		this.tbar = Ext.create('Ext.toolbar.Toolbar', {
+			//cls : 'fe-toolbar fe-toolbar-bottom',
+			//store : this.store,
+			//perPage : true,
+    		//displayInfo : true
+			height : 40,
+			style : {
+			},
+			items : [{
+				xtype : 'label',
+				text : '专栏名称：工程文件系统手册'
+			},'->',{
+				xtype : 'combo',
+				width : 170,
+				labelWidth : 35,
+				fieldLabel : '排序:',
+				emptyText : '按上传时间排序',
+			},{
+				xtype : 'combo',
+				width : 110,
+				labelWidth : 55,
+				fieldLabel : '每页显示:',
+				emptyText : '10',
+			}],
+		});
+		
+		this.items = this.GET_VIEW(this.defaultView);
+		
+		this.callParent();
+	},
+	getCurrentPanel : function() {
+		return this.getComponent(0);
+	},
+	changeView : function(viewName) {
+		var p = this.GET_VIEW(viewName);
+		//clear selection first!
+		var selModel = this.getSelectionModel();
+		if (selModel) {
+			selModel.deselectAll();
+		}
+		this.removeAll(true);
+		
+		if (p != null) {
+			this.add(p);
+		}
+	},
+	//private
+	_VIEWTYPES : {
+		detailed : 'FileExplorer.DetailViewPanel',
+		table : 'FileExplorer.TableViewPanel'
+	},
+	GET_VIEW : function(viewName) {
+		var xtype = this._VIEWTYPES[viewName];
+		if (!xtype) {
+			alert('no view type registered for:' + viewName);
+			return null;
+		}
+		
+		var cfg = {};
+		if (this.viewConfigs && this.viewConfigs[viewName]) {
+			cfg = this.viewConfigs[viewName];
+		}
+		
+		var panel = Ext.create(this._VIEWTYPES[viewName], Ext.applyIf({
+			store : this.store,
+			oList : this
+		}, cfg));
+		
+		var me = this;
+		panel.on('selectionchange', function(m, recs) {
+			me.fireEvent('selectionchange', recs);
+		});
+		
+		return panel;
+	},
+	registerViewType : function(viewName, type) {
+		this._VIEWTYPES[viewName] = type;
+	}
+});
 
 //=================VIEWS==============================
 Ext.define('FileExplorer.DetailViewPanel', {

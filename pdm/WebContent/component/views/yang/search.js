@@ -1,196 +1,267 @@
 function() {
+	
+	
+	if (typeof FileExplorer == 'undefined') {
+        Utils.importCSS(['static/ext/fileexplorer/theme.css']);
+        Utils.importJS(['static/ext/fileexplorer/fileexplorer.js', 'static/ext/fileexplorer/i18n/lang-' + localeString + '.js']);
+    }
+
+    FileExplorer.currentUserName = userLoginId;
+    FileExplorer.thumbnailRootPath = 'static/images/thumbnail/';
+    FileExplorer.iconRootPath = 'static/images/filetypes/';
 
 //TODO add columns
     var zghsearchPanel = Ext.create('Ext.panel.Panel', {
-        border : true,
-        layout : 'column',
-        region : 'center',
+        border : false,
+        //layout : 'border',
+        region : 'west',
         //autoScroll : true,
         bodyPadding : 0,
-        items : [{
-        	columnWidth : .2,
-        	xtype:'panel',
-        	//region:'west',
-        	items:[
-        	       {
-        	    	 buttons :  
-        	       },
-    	           {  
-    	               //title: 'General Info',  
-    	               xtype: 'form', 
-    	               //align : 'center',
-    	               defaults : {
-    	            	 padding : '1, 20, 5, 20',  
-    	            	 width : 200,
-    	            	 //bodyStyle : {align:'center',},
-    	               },
-    	               items: [
+//        margin : '0 10 0 0',
+//        	columnWidth : .2,
+    	width : '20%',
+    	items:[
+    	       {
+    	    	   xtype : 'toolbar',
+    	    	   defaults : {
+    	    		 padding : 0,
+    	    		 margin : 0,
+    	    		 height : 25,
+    	    	   },
+    	    	   items : [
+    	    	            {
+    	    	            	//xtype : 'button',
+    	    	            	btnType : 'info',
+    	    	            	text : '关键字搜索',
+    	    	            	width : '50%',
+    	    	            },
+    	    	            {
+    	    	            	//xtype : 'button',
+    	    	            	btnType : 'deepblue',
+    	    	            	text : '属性搜索',
+    	    	            	width : '49%',
+    	    	            }
+    	    	            ],
+    	    	 //buttons :  
+    	       },
+	           {  
+	               //title: 'General Info',  
+	               xtype: 'form', 
+	               //align : 'center',
+	               defaults : {
+	            	 padding : '0, 20, 0, 20',  
+	            	 width : '80%',
+	            	 //bodyStyle : {align:'center',},
+	               },
+	               items: [
+                       {
+                    	 xtype : 'label',
+                    	 text : '项目代码：',
+                       },
+	                   {  
+	                       xtype: 'textfield',  
+	                       //fieldLabel: '项目代码',  
+	                       //value: 'Vitaliy',  
+	                       //allowBlank: false  
+	                   },
+	                   {
+                    	 xtype : 'label',
+                    	 text : '文件源码：',
+                       },
+	                   {  
+	                       xtype: 'textfield',  
+	                       //fieldLabel: '文件源码',  
+	                       //value: 'Khmurach',  
+	                       //allowBlank: false  
+	                   },
+	                   {
+	                    	 xtype : 'label',
+	                    	 text : '文档名称：',
+	                   },
+	                   {  
+	                       xtype: 'textfield',  
+	                       //fieldLabel: '文档名称',  
+	                       //value: 'Khmurach',  
+	                       //allowBlank: false  
+	                   },
+	                   {
+                    	 xtype : 'label',
+                    	 text : '中文标题：',
+	                   },
+	                   {  
+	                       xtype: 'textfield',  
+	                       //fieldLabel: '中文标题',  
+	                       //value: 'Khmurach',  
+	                       //allowBlank: false  
+	                   }, 
+	                   {
+	                    	 xtype : 'label',
+	                    	 text : '英文标题：',
+  	                   },
+	                   {  
+	                       xtype: 'textfield',  
+	                       //fieldLabel: '英文标题',  
+	                       //value: 'Khmurach',  
+	                       //allowBlank: false  
+	                   }, 
+	                   {
+                    	 xtype : 'label',
+                    	 text : '部分通用：',
+	                   },
+	                   {  
+	                       xtype: 'textfield',  
+	                       //fieldLabel: '部分通用',  
+	                       //value: 'Khmurach',  
+	                       //allowBlank: false  
+	                   }, 
+	                   {
+	                    	 xtype : 'label',
+	                    	 text : '要根据属：',
+  	                   },
+	                   {  
+	                       xtype: 'textfield',  
+	                       //fieldLabel: '要根据属',  
+	                       //value: 'Khmurach',  
+	                       //allowBlank: false  
+	                   }
+	               ],  
+	               buttons: [{
+	            	   btnType : 'info',
+	                   text : '搜索',
+	                   width : '100%',
+	                   //action: 'save',  
+	                   //disabled: true  
+	               }]  
+	           },  
+	           {  
+	               xtype: 'form',  
+	               defaults : {
+  	            	 padding : '0 20 0 20', 
+  	            	 margin : '0 0 5 0',
+  	            	 width : '100%',
+  	            	 //bodyStyle : {align:'center',},
+  	               },
+	               items: [  
 	                       {
 	                    	 xtype : 'label',
-	                    	 text : '项目代码',
+	                    	 text : '搜索选项：',
 	                       },
-    	                   {  
-    	                       xtype: 'textfield',  
-    	                       //fieldLabel: '项目代码',  
-    	                       //value: 'Vitaliy',  
-    	                       //allowBlank: false  
-    	                   },
-    	                   {
-  	                    	 xtype : 'label',
-  	                    	 text : '文件源码',
-  	                       },
-    	                   {  
-    	                       xtype: 'textfield',  
-    	                       //fieldLabel: '文件源码',  
-    	                       //value: 'Khmurach',  
-    	                       //allowBlank: false  
-    	                   },
-    	                   {
-    	                    	 xtype : 'label',
-    	                    	 text : '文档名称',
-    	                   },
-    	                   {  
-    	                       xtype: 'textfield',  
-    	                       //fieldLabel: '文档名称',  
-    	                       //value: 'Khmurach',  
-    	                       //allowBlank: false  
-    	                   },
-    	                   {
-  	                    	 xtype : 'label',
-  	                    	 text : '中文标题',
-    	                   },
-    	                   {  
-    	                       xtype: 'textfield',  
-    	                       //fieldLabel: '中文标题',  
-    	                       //value: 'Khmurach',  
-    	                       //allowBlank: false  
-    	                   }, 
-    	                   {
-    	                    	 xtype : 'label',
-    	                    	 text : '英文标题',
-      	                   },
-    	                   {  
-    	                       xtype: 'textfield',  
-    	                       //fieldLabel: '英文标题',  
-    	                       //value: 'Khmurach',  
-    	                       //allowBlank: false  
-    	                   }, 
-    	                   {
-  	                    	 xtype : 'label',
-  	                    	 text : '部分通用',
-    	                   },
-    	                   {  
-    	                       xtype: 'textfield',  
-    	                       //fieldLabel: '部分通用',  
-    	                       //value: 'Khmurach',  
-    	                       //allowBlank: false  
-    	                   }, 
-    	                   {
-    	                    	 xtype : 'label',
-    	                    	 text : '要根据属',
-      	                   },
-    	                   {  
-    	                       xtype: 'textfield',  
-    	                       //fieldLabel: '要根据属',  
-    	                       //value: 'Khmurach',  
-    	                       //allowBlank: false  
-    	                   }
-    	               ],  
-    	               buttons: [{
-    	            	   btnType : 'info',
-    	                   text : '搜索',
-    	                   width : '100%',
-    	                   //action: 'save',  
-    	                   //disabled: true  
-    	               }]  
-    	           },  
-    	           {  
-    	               title: 'Additional Info',  
-    	               xtype: 'form',  
-    	               items: [  
-    	                   {  
-    	                       xtype: 'textfield',  
-    	                       fieldLabel: 'Country',  
-    	                       value: 'Ukraine',  
-    	                       allowBlank: false  
-    	                   },  
-    	                   {  
-    	                       xtype: 'textfield',  
-    	                       fieldLabel: 'City',  
-    	                       value: 'Kiev',  
-    	                       allowBlank: false  
-    	                   }  
-    	               ],  
-    	               buttons: [{  
-    	                   text: 'Save',  
-    	                   action: 'save',  
-    	                   disabled: true  
-    	               }]  
-    	           }]  
-        	},{
-        	columnWidth : .8,
-        	//region:'center',
-        	items:[{
-			 	cls : 'portlet portlet-margin',
-               // headerCls : 'header-bg',
-                autoHeight : true,
-//                hideHeaders : true,
-                //closable:true,
-                //collapsible : true,
-                xtype : 'grid',
-                height:'100%',
-                columnLines:false,
+	                   {  
+	                       xtype: 'combo',  
+	                       width : 197,
+	                       emptyText : '---请选择---',
+	                   },{
+	                	   xtype : 'toolbar',
+	                	   items : [{
+	                		   btnType : 'info',
+	                		   text : '保存',
+	                	   },{
+	                		   btnType : 'info',
+	                		   text : '取消',
+	                	   }],
+	                   } 
+	               ],  
+	           },{
+	        	   xtype : 'toolbar',
+	        	   defaults : {
+	        		 align : 'center',
+	        		 margin : '0 0 0 10',
+	        	   },
+	        	   style : {
+	        		 margin : '0 10 30 0',  
+	        	   },
+	        	   items : [{
+	        		   btnType : 'success',
+    	        	   text : '导出搜索结果',
+    	        	   width : '90%',
+	        	   }],
+        	}],
+    });
+    
+    var store = Ext.create('Ext.data.Store', {
+        model : 'OBJECT',
+        remoteSort : true,
+        proxy : {
+            type : 'ajax',
+            reader : {
+                type : 'json',
+                root : 'results',
+                totalProperty : 'total'
+            },
+            url : Utils.getCDAUrl('DocumentLibrary', 'getContents')
+        },
+        sorters : [{
+            property : 'cm:name',
+            direction : 'ASC'
+        }]
+    });
+    
+    var objList1 = Ext.create('FileExplorer.TableViewPanel', {
+    	region : 'center',
+    });
+   
+    
+    var objList = Ext.create('FileExplorer.ObjList', {
+        region : 'center',
+//        i18nFunc : msg,
+//        actionProvider : actionProvider,
+//        actionExecutor : actionExecutor,
+        listeners : {
+            selectionchange : function(recs) {
+                //console.log(recs);
+            }
+        },
+        viewConfigs : {
+           /* detailed : {
                 columns : [{
-                	header:'主题',
-                	align:'center',
-                    dataIndex : 'subject',
-                    flex : 1
+                    xtype : 'fethumbnailcolumn'
                 }, {
-                	header:'发送人',
-                	align:'center',
-                    dataIndex : 'sender',
+                    xtype : 'fedetailcolumn',
                     flex : 1
-                }, {
-                	header:'接收日期',
-                	align:'center',
-                    dataIndex : 'date',
-                    flex : 1
-                }, {
-                	header:'状态',
-                	align:'center',
-                    dataIndex : 'state',
-                    width : 120
                 }],
-                viewConfig: {
-                },
-                store : {
-                    fields : ['state', 'subject', 'sender', 'date'],
-                    listeners : {
-                        load : function(store) {
-                        }
-                    },
-                    data : [{
-                        state : '休眠',
-                        subject : '文档生效流程 2012-07-10',
-                        sender : 'Tian Chao',
-                        date : '2014-01-02'
-                    }, {
-                        state : '暂停',
-                        subject : '内部设计审查流程',
-                        sender : 'aa01',
-                        date : '2014-01-02'
-                    }, {
-                        state : '暂停',
-                        subject : '流程初始化 2013-01-18',
-                        sender : 'aa01',
-                        date : '2014-01-02'
-                    }]
-                }
-		
-        	       }],
-        }],
+            },*/
+            table : {
+                columns : [{
+                    xtype : 'feiconcolumn'
+                }, {
+                    width : 200,
+                    xtype : 'fenamecolumn',
+                    dataIndex : 'cm:name',
+                    i18nkey : 'name'
+                }, {
+                    width : 200,
+                    xtype : 'fedisplaycolumn',
+                    dataIndex : 'cm:title',
+                    i18nkey : 'title'
+                }, {
+                    width : 100,
+                    xtype : 'feusercolumn',
+                    dataIndex : 'cm:creator',
+                    i18nkey : 'createdby'
+                }, {
+                    width : 155,
+                    xtype : 'fedatetimecolumn',
+                    dataIndex : 'cm:modified',
+                    i18nkey : 'datemodified'
+                }, {
+                    width : 80,
+                    xtype : 'fecolumn',
+                    dataIndex : 'edm:state',
+                    i18nkey : 'status'
+                }, {
+                    width : 80,
+                    xtype : 'fesizecolumn',
+                    i18nkey : 'size'
+                }, /*{
+                    xtype : 'feactioncolumn',
+                    i18nkey : 'operation'
+                }*/]
+            }
+        },
+        store : store,
     });
 
+    var inited = false;
     return {
         xtype : 'panel',
         border : false,
@@ -200,14 +271,32 @@ function() {
         bodyStyle : {
             background : 'transparent'
         },
-       // html : 'html代aaa码',
-        listeners : {
-            viewShown : function() {
-               // store.reload();
+        listeners : {/*
+            viewShown : function(signal) {
+                if (!inited) {
+                    inited = true;
+                    return;
+                }
+
+                if (signal.reloadTree) {
+                    var node = tree.getCurrentNode();
+                    tree.store.reload({
+                        node : node,
+                        callback : function() {
+                            node.expand();
+                        }
+                    });
+                }
+                if (signal.reloadGrid) {
+                    objectList.getDockedItems()[2].moveFirst();
+                }
             }
+        */
+        	viewShown : function() {
+                 store.reload();
+             }
         },
-        //items : [treePanel, taskBody]
-       items:[zghsearchPanel],
+       items:[zghsearchPanel, objList],
     };
 
 }
