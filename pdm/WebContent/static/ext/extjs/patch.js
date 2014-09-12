@@ -20,11 +20,7 @@ Ext.util.Format.fileSize = (function(){
     return function(size) {
         var out;
         if (size < byteLimit) {
-            if (size === 1) {
-                out = '1B';
-            } else {
-                out = size + ' B';
-            }
+            out = size + 'B';
         } else if (size < kbLimit) {
             out = (Math.round(((size*10) / byteLimit))/10) + 'KB';
         } else if (size < mbLimit) {
@@ -290,6 +286,7 @@ Ext.override(Ext.panel.Table, {
 });
 
 Ext.override(Ext.grid.Panel, {
+	disableSelection : false,
 	contextDetect : false,
 	afterRender : function() {
 		var me = this;
@@ -304,6 +301,10 @@ Ext.override(Ext.grid.Panel, {
 				} catch (e) {}
 			}
 		});
+		
+		if (this.disableSelection) {
+			this.on('beforeselect', function() {return false;});
+		}
 
 		this.callParent();
 	}
@@ -313,99 +314,107 @@ Ext.override(Ext.button.Button, {
 	btnType : 'common',
 	initComponent : function() {
 
-		if (this.btnType) {
-			this.cls = 'special-btn btn-' + this.btnType;
-			this.overCls = 'over-' + this.btnType;
-			this.focusCls = 'over-' + this.btnType;
-			this.pressedCls = 'pressed-' + this.btnType;
-			this.textCls = 'x-btn-text-' + this.btnType;
-			this.pressedTextCls = 'x-btn-pressed-text-' + this.btnType;
-			this.menuActiveCls = 'menu-active-' + this.btnType;
-		}
-
-		if (this.actionBtn) {
-			this.minWidth = 70;
-		}
-		
-		if (this.closeWinBtn) {
-			this.handler = function() {
-				try {
-					this.ownerCt.ownerCt.close();
-				} catch (e) {}
+//		if (!(this instanceof Ext.tab.Tab)) {
+			if (this.btnType) {
+				this.cls = 'special-btn btn-' + this.btnType;
+				this.overCls = 'over-' + this.btnType;
+				this.focusCls = 'over-' + this.btnType;
+				this.pressedCls = 'pressed-' + this.btnType;
+				this.textCls = 'x-btn-text-' + this.btnType;
+				this.pressedTextCls = 'x-btn-pressed-text-' + this.btnType;
+				this.menuActiveCls = 'menu-active-' + this.btnType;
 			}
-		}
-		
+	
+			if (this.actionBtn) {
+				this.minWidth = 70;
+			}
+			
+			if (this.closeWinBtn) {
+				this.handler = function() {
+					try {
+						this.ownerCt.ownerCt.close();
+					} catch (e) {}
+				}
+			}
+//		}
 		this.callParent();
 	},
 	toggle: function(state, suppressEvent) {
-        var me = this;
-        state = state === undefined ? !me.pressed: !!state;
-        if (state !== me.pressed) {
-            if (me.rendered) {
-                me[state ? 'addClsWithUI': 'removeClsWithUI'](me.pressedCls);
-                Ext.fly(me.el.query('.x-btn-inner')[0])[state ? 'addCls' : 'removeCls'](this.pressedTextCls);
-            }
-            me.pressed = state;
-            if (!suppressEvent) {
-                me.fireEvent('toggle', me, state);
-                Ext.callback(me.toggleHandler, me.scope || me, [me, state]);
-            }
-        }
+		if (!(this instanceof Ext.tab.Tab)) {
+	        var me = this;
+	        state = state === undefined ? !me.pressed: !!state;
+	        if (state !== me.pressed) {
+	            if (me.rendered) {
+	                me[state ? 'addClsWithUI': 'removeClsWithUI'](me.pressedCls);
+	                Ext.fly(me.el.query('.x-btn-inner')[0])[state ? 'addCls' : 'removeCls'](this.pressedTextCls);
+	            }
+	            me.pressed = state;
+	            if (!suppressEvent) {
+	                me.fireEvent('toggle', me, state);
+	                Ext.callback(me.toggleHandler, me.scope || me, [me, state]);
+	            }
+	        }
+		}
         return me;
    },
 	onMouseDown: function(e) {
-        var me = this;
-
-        if (Ext.isIE) {
-            me.getFocusEl().focus();
-        }
-
-        if (!me.disabled && e.button === 0) {
-            Ext.button.Manager.onButtonMousedown(me, e);
-            me.addClsWithUI(me.pressedCls);
-            Ext.fly(this.el.query('.x-btn-inner')[0]).addCls(this.pressedTextCls);
-        }
+		if (!(this instanceof Ext.tab.Tab)) {
+	        var me = this;
+	
+	        if (Ext.isIE) {
+	            me.getFocusEl().focus();
+	        }
+	
+	        if (!me.disabled && e.button === 0) {
+	            Ext.button.Manager.onButtonMousedown(me, e);
+	            me.addClsWithUI(me.pressedCls);
+	            Ext.fly(this.el.query('.x-btn-inner')[0]).addCls(this.pressedTextCls);
+	        }
+		}
     },
     onMouseUp: function(e) {
-        var me = this;
-
-        // If the external mouseup listener of the ButtonManager fires after the button has been destroyed, ignore.
-        if (!me.isDestroyed && e.button === 0) {
-            if (!me.pressed) {
-                me.removeClsWithUI(me.pressedCls);
-                Ext.fly(this.el.query('.x-btn-inner')[0]).removeCls(this.pressedTextCls);
-            }
-        }
+    	if (!(this instanceof Ext.tab.Tab)) {
+	        var me = this;
+	
+	        // If the external mouseup listener of the ButtonManager fires after the button has been destroyed, ignore.
+	        if (!me.isDestroyed && e.button === 0) {
+	            if (!me.pressed) {
+	                me.removeClsWithUI(me.pressedCls);
+	                Ext.fly(this.el.query('.x-btn-inner')[0]).removeCls(this.pressedTextCls);
+	            }
+	        }
+    	}
     },
 	afterRender : function() {
-
-		if (this.btnType) {
-			Ext.fly(this.el.query('.x-btn-inner')[0]).addCls(this.textCls);
-			
-			if (Ext.isIE7 || Ext.isIE8) {
-				this.el.dom.style.cssText = 'border-width:1px!important;';
-				Ext.each(this.el.query('*[class^="x-frame"]'), function(ele) {
-					Ext.fly(ele).setStyle('background-image', 'none');
-					Ext.fly(ele).setStyle('background-color', 'transparent');
-				});
-
-			}
-		}
-		
-		//button group
-		if (this.btnPosition) {
-			
-			if (this.btnPosition == 'first' || this.btnPosition == 'middle') {
-				this.el.setStyle('margin-right', '-1px');
-				this.el.setStyle('border-top-right-radius', '0px');
-				this.el.setStyle('border-bottom-right-radius', '0px');
+		if (!(this instanceof Ext.tab.Tab)) {
+			if (this.btnType) {
+				Ext.fly(this.el.query('.x-btn-inner')[0]).addCls(this.textCls);
+				
+				if (Ext.isIE7 || Ext.isIE8) {
+					this.el.dom.style.cssText = 'border-width:1px!important;';
+					Ext.each(this.el.query('*[class^="x-frame"]'), function(ele) {
+						Ext.fly(ele).setStyle('background-image', 'none');
+						Ext.fly(ele).setStyle('background-color', 'transparent');
+					});
+	
+				}
 			}
 			
-			if (this.btnPosition == 'middle' || this.btnPosition == 'last') {
-				this.el.setStyle('border-top-left-radius', '0px');
-				this.el.setStyle('border-bottom-left-radius', '0px');
+			//button group
+			if (this.btnPosition) {
+				
+				if (this.btnPosition == 'first' || this.btnPosition == 'middle') {
+					this.el.setStyle('margin-right', '-1px');
+					this.el.setStyle('border-top-right-radius', '0px');
+					this.el.setStyle('border-bottom-right-radius', '0px');
+				}
+				
+				if (this.btnPosition == 'middle' || this.btnPosition == 'last') {
+					this.el.setStyle('border-top-left-radius', '0px');
+					this.el.setStyle('border-bottom-left-radius', '0px');
+				}
+				
 			}
-			
 		}
 		
 		this.callParent();
@@ -729,15 +738,21 @@ Ext.override(Ext.grid.feature.Grouping, {
 		me.customWidgets = [];
 
 		Ext.each(me.getGroupNames(), function(groupName) {
-
-			var n = me.getHeaderNode(groupName).child('div');
-			n.setHTML('');
+			var n = me.getHeaderNode(groupName);
+			if (!n) {
+				return;
+			}
+			var n = n.child('div');
+			if (!n) {
+				return;
+			}
+			//n.setHTML('');
 
 			if (n.child('span[role=customwidgets]')) {
 				n.child('span[role=customwidgets]').remove();
 			}
 
-			n.insertFirst({
+			n.appendChild({
 				tag : 'span',
 				role : 'customwidgets'
 			});
@@ -747,9 +762,10 @@ Ext.override(Ext.grid.feature.Grouping, {
 		});
 	},
 	afterViewRender : function() {
-		var me = this, view = me.view;
-
-		//4 CUSTOM WIDGETS
+		var me = this,
+            view = me.view;
+            
+        //4 CUSTOM WIDGETS
 		if (this.getCustomWidget) {
 			view.on('refresh', function() {
 				me.renderCustomWidgets();
@@ -769,27 +785,28 @@ Ext.override(Ext.grid.feature.Grouping, {
 		}
 		//END
 
-		view.on({
-			scope : me,
-			groupclick : me.onGroupClick
-		});
+        view.on({
+            scope: me,
+            groupclick: me.onGroupClick
+        });
 
-		if (me.enableGroupingMenu) {
-			me.injectGroupingMenu();
-		}
+        if (me.enableGroupingMenu) {
+            me.injectGroupingMenu();
+        }
 
-		me.pruneGroupedHeader();
+        me.pruneGroupedHeader();
 
-		me.lastGroupers = me.view.store.groupers.getRange();
-		me.block();
-		me.onGroupChange();
-		me.unblock();
+        me.lastGroupers = me.view.store.groupers.getRange();
+        me.block();
+        me.onGroupChange();
+        me.unblock();
 
-		// If disabled in the config, disable now so the store load won't
-		// send the grouping query params in the request.
-		if (me.disabled) {
-			me.disable();
-		}
+        // If disabled in the config, disable now so the store load won't
+        // send the grouping query params in the request.
+        if (me.disabled) {
+            me.disable();
+        }
+		
 	}
 });
 

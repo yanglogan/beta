@@ -19,6 +19,10 @@ function() {
         bodyPadding : 0,
 //        margin : '0 10 0 0',
 //        	columnWidth : .2,
+      /*  layout : {
+        	type : 'vbox',
+        	align : 'center',
+        },*/
     	width : '20%',
     	items:[
     	       {
@@ -178,6 +182,82 @@ function() {
         	}],
     });
     
+    var tabs = Ext.create('Ext.tab.Panel', {
+    	width: '100%',
+	    height: '100%',
+	    activeTab: 0,
+	    bodyPadding: 10,
+        items: [
+                {
+                    title: 'Tab 1',
+                    html : 'A simple tab'
+                },
+                {
+                    title: 'Tab 2',
+                    html : 'Another one'
+                }
+            ]
+        });
+    
+    var searchPanel = Ext.create('Ext.panel.Panel', {
+    border : false,
+    region : 'west',
+    bodyPadding : 0,
+	width : '20%',
+	items:[
+	       tabs,
+           {  
+               xtype: 'form',  
+               defaults : {
+	            	 padding : '0 20 0 20', 
+	            	 margin : '0 0 5 0',
+	            	 width : '100%',
+	            	 //bodyStyle : {align:'center',},
+	               },
+               items: [  
+                       {
+                    	 xtype : 'label',
+                    	 text : '搜索选项：',
+                       },
+                   {  
+                       xtype: 'combo',  
+                       width : 197,
+                       emptyText : '---请选择---',
+                   },{
+                	   xtype : 'toolbar',
+                	   layout : {
+                		 type :  'hbox',
+                		 align : 'center',
+                	   },
+                	   items : [{
+                		   btnType : 'info',
+                		   text : '保存',
+                	   },{
+                		   btnType : 'info',
+                		   text : '取消',
+                	   }],
+                   } 
+               ],  
+           },{
+        	   xtype : 'toolbar',
+        	   defaults : {
+        		 
+        		 margin : '0 0 0 10',
+        	   },
+        	   defaultAlign : {
+        		   align : 'center',
+        	   },
+        	   style : {
+//        		 margin : '0 10 30 0',  
+        	   },
+        	   items : [{
+        		   btnType : 'success',
+	        	   text : '导出搜索结果',
+	        	   width : '90%',
+        	   }],
+    	}],
+});
+    
     var store = Ext.create('Ext.data.Store', {
         model : 'OBJECT',
         remoteSort : true,
@@ -296,7 +376,7 @@ function() {
                  store.reload();
              }
         },
-       items:[zghsearchPanel, objList],
+       items:[searchPanel, objList],
     };
 
 }

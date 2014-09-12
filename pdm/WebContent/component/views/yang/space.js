@@ -21,7 +21,7 @@ function() {
         	xtype : 'panel',
         	title: '我的文档',
         	collapsible : true,
-            collapseDirection : 'bottom',
+            collapseDirection : 'top',
             height : '50%',
         	items : [{
 	        	xtype : 'treepanel',
@@ -70,7 +70,7 @@ function() {
         	xtype : 'panel',
         	title: '我的收藏',
         	collapsible : true,
-            collapseDirection : 'bottom',
+            collapseDirection : 'top',
             height : '50%',
         	items : [{
 	        	xtype : 'treepanel',
