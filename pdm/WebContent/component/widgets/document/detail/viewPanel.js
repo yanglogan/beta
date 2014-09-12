@@ -34,13 +34,7 @@ Ext.define('component.document.detail.viewPanel', {
 			columnWidth : .75,
 			items : [{
 				style : 'border:1px #C0C0C0 solid;'
-			}, {
-				title : '评论(10) 综合评分:4.3',
-				layout : 'form',
-				autoHeight : true,
-				style : 'margin-top:5px;',
-				items : []
-			}]
+			},]
 		}, {
 			columnWidth : .25,
 			style : 'padding-left:5px;',
@@ -50,7 +44,14 @@ Ext.define('component.document.detail.viewPanel', {
 				bodyPadding : 15,
 				bodyCls : 'form-body'
 			},
-			items : [this.actionPanel]
+			items : [{
+				xtype : 'button',
+				btnType : 'info',
+				text : '全屏显示',
+				width : '80%',
+				height : 30,
+				margin : '0 0 2 25',
+			},this.actionPanel]
 		}];
 		
 		this.callParent();
@@ -59,10 +60,8 @@ Ext.define('component.document.detail.viewPanel', {
 		var me = this;
 		//render title.
 		this.titlePanel.setHTML('<table cellspacing=0 cellpadding=0 style="width:100%;"><tr><td rowspan=2 class="icon64"><img class="icon64" onerror="this.src=\'static/images/thumbnail/_default.png\'" src="static/images/thumbnail/' + rec.raw.EXTENSION + '.png" /></td>' + 
-				'<td><span style="font-size:24px;">文档查看:' + rec.raw['cm:name'] + '</span>' +
-				(rec.raw['cm:versionLabel'] ? '<span style="float:left;margin-right:5px;" class="fe-version-block">' + rec.raw['cm:versionLabel'] + '</span>' : '') + '</td></tr>' + 
-				'<tr><td style="vertical-align:bottom;"><span>已被  ' + rec.raw['cm:modifier'] + ' 在 ' + Utils.parseDateStr(rec.raw['cm:modified'], 'Y-m-d H:i:s') + 
-				' 修改 | 收藏夹 | 喜欢 | 评论 | 共享</span></td></tr></table>');
+				'<td><span style="font-size:24px;">' + rec.raw['cm:name'] + '</span>' +
+				(rec.raw['cm:versionLabel'] ? '<span style="float:left;margin-right:5px;" class="fe-version-block">' + rec.raw['cm:versionLabel'] + '</span>' : '') + '</td></tr></table>');
 		
 		//render actions.
 		var actionProvider = this.actionProvider;
@@ -114,8 +113,38 @@ Ext.define('component.document.detail.viewPanel', {
 			p.html = html;
 			
 			me.actionPanel.ownerCt.add(p);
+			//me.actionPanel.ownerCt
 			
 		});
+		var bs = {
+//				style : 'border-top:1px #C0C0C0 solid;',
+				collapsible : false,
+				bodyPadding : 15,
+				bodyCls : 'form-body',
+				layout: {
+			        type: 'vbox',
+			        align: 'center'
+			    },
+				defaults : {
+					margin : '1 0 5 0',
+					width : '70%',
+					height : 30,
+				},
+				items : [{
+					xtype : 'button',
+					btnType : 'success',
+					text : '下载文档',
+				},{
+					xtype : 'button',
+					btnType : 'success',
+					text : '查看文档属性',
+				},{
+					xtype : 'button',
+					btnType : 'success',
+					text : '收藏',
+				},]
+		};
+		this.actionPanel.ownerCt.add(bs);
 		this.actionPanel.ownerCt.doLayout();
 		
 		//add preview panel

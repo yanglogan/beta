@@ -147,7 +147,7 @@ Ext.onReady(function() {
 					},{
 						btnType : 'info',
 						//xtype : 'button',
-						style : 'margin-right:4px;background-color:"blue";',
+						style : 'margin-right:4px;',
 						text : '搜索',
 						//id : 'SEARCH_SCOPE',
 						height : 30,

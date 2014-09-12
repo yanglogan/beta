@@ -82,7 +82,7 @@ function() {
                    headerCls : 'header-bg',
 			},{
 				 	cls : 'portlet portlet-margin',
-	               // headerCls : 'header-bg',
+//	                headerCls : 'header-bg',
 	                autoHeight : true,
 //	                hideHeaders : true,
 	                //closable:true,
@@ -90,22 +90,23 @@ function() {
 	                xtype : 'grid',
 	                columnLines:false,
 	                columns : [{
-	                	header:'主题',
+	                	text:'主题',
+//	                	headerCls : 'header-bg',
 	                	align:'center',
 	                    dataIndex : 'subject',
 	                    flex : 1
 	                }, {
-	                	header:'发送人',
+	                	text:'发送人',
 	                	align:'center',
 	                    dataIndex : 'sender',
 	                    flex : 1
 	                }, {
-	                	header:'接收日期',
+	                	text:'接收日期',
 	                	align:'center',
 	                    dataIndex : 'date',
 	                    flex : 1
 	                }, {
-	                	header:'状态',
+	                	text:'状态',
 	                	align:'center',
 	                    dataIndex : 'state',
 	                    width : 120
